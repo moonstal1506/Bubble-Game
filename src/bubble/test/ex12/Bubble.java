@@ -36,7 +36,6 @@ public class Bubble extends JLabel implements Moveable {
 		this.player = mContext.getPlayer();
 		initObject();
 		initSetting();
-		initThread();
 	}
 
 	private void initObject() {
@@ -61,16 +60,6 @@ public class Bubble extends JLabel implements Moveable {
 		state = 0;
 	}
 
-	private void initThread() {
-		// 버블은 스레드가 하나만 필요하다.
-		new Thread(() -> {
-			if (player.getPlayerWay() == PlayerWay.LEFT) {
-				left();
-			} else {
-				right();
-			}
-		}).start();
-	}
 
 	@Override
 	public void left() {
