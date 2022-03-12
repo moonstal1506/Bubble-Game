@@ -1,15 +1,20 @@
-package bubble.test.ex03;
+package bubble.test.ex04;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import lombok.Getter;
+import lombok.Setter;
+
 //class Player-> new가능한 애들 게임에 존재(추상메서드 가질 수 없다.)
+@Getter
+@Setter
 public class Player extends JLabel implements Moveable {
-	//위치상태
+	// 위치상태
 	private int x;
 	private int y;
-	
-	//움직임 상태
+
+	// 움직임 상태
 	private boolean left;
 	private boolean right;
 	private boolean up;
@@ -30,11 +35,11 @@ public class Player extends JLabel implements Moveable {
 	private void initSetting() {
 		x = 55;
 		y = 535;
-		
-		left= false;
-		right= false;
-		up= false;
-		down= false;
+
+		left = false;
+		right = false;
+		up = false;
+		down = false;
 
 		setIcon(playerR);
 		setSize(50, 50);
@@ -43,16 +48,42 @@ public class Player extends JLabel implements Moveable {
 
 	@Override
 	public void left() {
-		setIcon(playerL);
-		x=x-10;
-		setLocation(x, y);
+		System.out.println("l");
+		left = true;
+		new Thread(() -> {
+			while(left) {
+			setIcon(playerL);
+			x = x - 1;
+			setLocation(x, y);
+			try {
+				Thread.sleep(10);//0.01초
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
+		}).start();
+		
 	}
 
 	@Override
 	public void right() {
-		setIcon(playerR);
-		x=x+10;
-		setLocation(x, y);
+		System.out.println("r");
+		right = true;
+		new Thread(() -> {
+			while(right) {
+			setIcon(playerR);
+			x = x + 1;
+			setLocation(x, y);
+			try {
+				Thread.sleep(10);//0.01초
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
+		}).start();
+		
 	}
 
 	@Override
