@@ -43,6 +43,7 @@ public class Enemy extends JLabel implements Moveable {
 		initObject();
 		initSetting();
 		initBackgroundEnemyService();
+		right();
 	}
 
 	private void initObject() {
@@ -68,7 +69,7 @@ public class Enemy extends JLabel implements Moveable {
 	}
 
 	private void initBackgroundEnemyService() {
-//		new Thread(new BackgroundEnemyService(this)).start();
+		new Thread(new BackgroundEnemyService(this)).start();
 	}
 
 	
