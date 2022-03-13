@@ -174,5 +174,18 @@ public class Bubble extends JLabel implements Moveable {
 			e.printStackTrace();
 		}
 	}
-
+	void clearBubbled() {
+		new Thread(()->{
+			try {
+				up= false;
+				setIcon(bomb);
+				Thread.sleep(1000);
+				mContext.remove(this);
+				mContext.repaint();
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}).start();
+		
+	}
 }

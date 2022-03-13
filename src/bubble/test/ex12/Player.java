@@ -1,19 +1,23 @@
 package bubble.test.ex12;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import lombok.Getter;
 import lombok.Setter;
 
-//class Player-> new가능한 애들 게임에 존재(추상메서드 가질 수 없다.)
+// class Player -> new 가능한 애들!! 게임에 존재할 수 있음. (추상메서드를 가질 수 없다.)
 @Getter
 @Setter
 public class Player extends JLabel implements Moveable {
-	
+
 	private BubbleFrame mContext;
-	
-	// 위치상태
+	private List<Bubble> bubbleList;
+
+	// 위치 상태
 	private int x;
 	private int y;
 
@@ -32,7 +36,7 @@ public class Player extends JLabel implements Moveable {
 
 	// 플레이어 속도 상태
 	private final int SPEED = 4;
-	private final int JUMPSPEED = 2;
+	private final int JUMPSPEED = 2; // up, down
 
 	private ImageIcon playerR, playerL;
 
@@ -46,6 +50,7 @@ public class Player extends JLabel implements Moveable {
 	private void initObject() {
 		playerR = new ImageIcon("image/playerR.png");
 		playerL = new ImageIcon("image/playerL.png");
+		bubbleList = new ArrayList<>();
 	}
 
 	private void initSetting() {
@@ -61,6 +66,7 @@ public class Player extends JLabel implements Moveable {
 		rightWallCrash = false;
 
 		playerWay = PlayerWay.RIGHT;
+
 		setIcon(playerR);
 		setSize(50, 50);
 		setLocation(x, y);
@@ -72,21 +78,22 @@ public class Player extends JLabel implements Moveable {
 
 	@Override
 	public void attack() {
-		new Thread(()->{
+		new Thread(() -> {
 			Bubble bubble = new Bubble(mContext);
 			mContext.add(bubble);
-			if(playerWay== PlayerWay.LEFT) {
+			bubbleList.add(bubble);
+			if (playerWay == PlayerWay.LEFT) {
 				bubble.left();
-			}else {
+			} else {
 				bubble.right();
 			}
 		}).start();
-		
 	}
-	
+
+	// 이벤트 핸들러
 	@Override
 	public void left() {
-//		System.out.println("l");
+		// System.out.println("left");
 		playerWay = PlayerWay.LEFT;
 		left = true;
 		new Thread(() -> {
@@ -95,9 +102,8 @@ public class Player extends JLabel implements Moveable {
 				x = x - SPEED;
 				setLocation(x, y);
 				try {
-					Thread.sleep(10);// 0.01초
+					Thread.sleep(10); // 0.01초
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -107,7 +113,7 @@ public class Player extends JLabel implements Moveable {
 
 	@Override
 	public void right() {
-//		System.out.println("r");
+		// System.out.println("right");
 		playerWay = PlayerWay.RIGHT;
 		right = true;
 		new Thread(() -> {
@@ -116,9 +122,8 @@ public class Player extends JLabel implements Moveable {
 				x = x + SPEED;
 				setLocation(x, y);
 				try {
-					Thread.sleep(10);// 0.01초
+					Thread.sleep(10); // 0.01초
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -126,10 +131,10 @@ public class Player extends JLabel implements Moveable {
 
 	}
 
-	// left+up,right+up
+	// left + up, right + up
 	@Override
 	public void up() {
-//		System.out.println("up");
+		// System.out.println("up");
 		up = true;
 		new Thread(() -> {
 			for (int i = 0; i < 130 / JUMPSPEED; i++) {
@@ -141,14 +146,16 @@ public class Player extends JLabel implements Moveable {
 					e.printStackTrace();
 				}
 			}
+
 			up = false;
 			down();
+
 		}).start();
 	}
 
 	@Override
 	public void down() {
-//		System.out.println("down");
+		// System.out.println("down");
 		down = true;
 		new Thread(() -> {
 			while (down) {
